@@ -1,0 +1,236 @@
+const en = {
+  common: {
+    loading: "Loading...",
+    submit: "Submit",
+    submitting: "Submitting...",
+    save: "Save",
+    cancel: "Cancel",
+    close: "Close",
+    back: "Back",
+    optional: "optional",
+    yes: "Yes",
+    no: "No",
+    refresh: "Refresh",
+    error_generic: "Something went wrong",
+  },
+  header: {
+    app_title: "Lecturer Performance Evaluation",
+    app_subtitle: "Faculty of Economics and Business · UNIGA Malang",
+    nav_mahasiswa: "Student",
+    nav_admin: "Admin",
+    nav_panduan: "Guide",
+    language: "Language",
+    language_id: "Indonesia",
+    language_en: "English",
+  },
+  footer: {
+    periode: "Evaluation period 2025/2026",
+    privacy: "Your data is kept confidential",
+  },
+  kd: {
+    kd1: "Communicating syllabus / course contract",
+    kd2: "Course materials match the syllabus / contract",
+    kd3: "Ability to explain materials",
+    kd4: "Ability to answer questions / discuss",
+    kd5: "Ability to interact with students",
+    kd6: "Punctuality / discipline in teaching",
+    kd7: "Lecturer's grooming / appearance",
+  },
+  score: {
+    "1": "Very Poor",
+    "2": "Fair",
+    "3": "Good",
+    "4": "Very Good",
+  },
+  mahasiswa_login: {
+    title: "Student Login",
+    desc: "Enter your student ID (NIM) and full name to start the lecturer evaluation.",
+    label_nim: "NIM (Student ID)",
+    placeholder_nim: "2512000xxx",
+    label_nama: "Full Name",
+    placeholder_nama: "As registered in SIAKAD",
+    cta_login: "Start Evaluation",
+    notes_title: "Notes:",
+    note_1: "Your evaluation is anonymous to the lecturer.",
+    note_2: "It does not affect your grades.",
+    note_3: "Data is used to evaluate and improve lecturer performance.",
+    panduan_link: "Read the user guide first",
+    err_login_failed: "Login failed",
+  },
+  mahasiswa_form: {
+    label_mahasiswa: "Student",
+    angkatan: "Class of",
+    periode_label: "Period:",
+    logout: "Log out",
+    stat_total: "Total Lecturers",
+    stat_done: "Evaluated",
+    stat_remaining: "Not yet evaluated",
+    success: "Your evaluation has been saved. Thank you for participating!",
+    all_done_title: "You have evaluated every lecturer in your classes.",
+    all_done_desc: "Thank you for participating!",
+    dosen_waiting: "{{count}} lecturer(s) awaiting evaluation",
+    dosen_pengampu: "Lecturer in charge",
+    saran_label: "Suggestion / Feedback",
+    saran_placeholder: "Write constructive feedback for this lecturer...",
+    cta_submit: "Submit All Evaluations",
+    err_missing: "Some lecturers still need to be evaluated: {{names}}",
+    err_more: "{{count}} more",
+    err_no_items: "No evaluations to submit.",
+    err_load: "Failed to load data",
+    err_send: "Failed to send evaluation",
+    back_to_login: "Back to login",
+  },
+  admin_login: {
+    title: "Admin Login",
+    desc: "Access the evaluation dashboard and export reports for the program / faculty.",
+    label_password: "Admin Password",
+    cta_login: "Sign in",
+    panduan_link: "Read the admin guide first",
+    err_login_failed: "Login failed",
+  },
+  admin_dashboard: {
+    title: "Admin Dashboard",
+    periode_loading: "Loading...",
+    periode_label: "Period {{semester}} {{tahun}}",
+    open: "Open",
+    closed: "Closed",
+    btn_open_periode: "Open Period",
+    btn_close_periode: "Close Period",
+    btn_refresh: "Refresh",
+    btn_logout: "Log out",
+    stat_total_mhs: "Total Students",
+    stat_filled: "Submitted",
+    stat_pending: "Pending",
+    stat_total_penilaian: "Total Evaluations",
+    progress_label: "Submission progress",
+    filter_prodi: "Filter Program:",
+    all_prodi: "All Programs",
+    export_rekap: "Export Summary (.xlsx)",
+    export_raw: "Export Raw Responses",
+    tab_rekap: "Summary per Course-Lecturer",
+    tab_dosen: "Summary per Lecturer",
+    tab_responses: "Response Details",
+    empty: "No evaluation data yet.",
+    empty_resp: "No student responses yet.",
+    th_prodi: "Program",
+    th_dosen: "Lecturer",
+    th_matkul: "Course",
+    th_n: "N",
+    th_avg: "Avg",
+    th_saran: "Feedback",
+    th_waktu: "Time",
+    th_nim: "NIM",
+    th_mahasiswa: "Student",
+    more_items: "+{{count}} more",
+    err_load: "Failed to load data",
+    err_periode: "Failed to change period",
+    err_download: "Failed to download",
+  },
+  panduan: {
+    title: "User Guide",
+    subtitle:
+      "This page explains how to use the FEB UNIGA Malang Lecturer Performance Evaluation platform — for both students and the program/faculty admin.",
+    tab_mahasiswa: "For Students",
+    tab_admin: "For Admin / Program",
+
+    mhs_intro_title: "What is the Lecturer Performance Evaluation?",
+    mhs_intro_body:
+      "The Lecturer Performance Evaluation is a regular assessment you provide as a student about lecturers teaching your courses in the current semester. The program and faculty use it to improve teaching quality. Evaluations are anonymous to the lecturer — the lecturer does not see which student gave which score.",
+
+    mhs_step1_title: "Step 1 · Log in",
+    mhs_step1_body:
+      "Open the main page and log in with your NIM (10 digits) and full name as registered in SIAKAD. The system only allows one submission per NIM per period.",
+
+    mhs_step2_title: "Step 2 · Review your courses & lecturers",
+    mhs_step2_body:
+      "After logging in you will see a summary: total lecturers to evaluate, already evaluated, and not yet evaluated. Below that is the list of your courses; click to expand and see the lecturers in charge.",
+
+    mhs_step3_title: "Step 3 · Score the 7 indicators (KD-1 to KD-7)",
+    mhs_step3_body:
+      "For each lecturer, give a score of 1–4 on the 7 indicators below. Click a score box to select. All 7 indicators are required before you can submit.",
+    mhs_step3_scale_title: "Scoring scale:",
+    mhs_step3_scale_1: "1 — Very Poor: does not meet expectations at all",
+    mhs_step3_scale_2: "2 — Fair: partially meets expectations, needs improvement",
+    mhs_step3_scale_3: "3 — Good: meets expectations well",
+    mhs_step3_scale_4: "4 — Very Good: exceeds expectations, exemplary",
+    mhs_step3_kd_title: "Explanation of each indicator:",
+    mhs_step3_kd1: "KD-1 · Communicates the syllabus / contract — the lecturer presents the semester learning plan at the start.",
+    mhs_step3_kd2: "KD-2 · Materials match the syllabus — what is taught aligns with what was promised in the syllabus.",
+    mhs_step3_kd3: "KD-3 · Ability to explain materials — clarity, structure, relevant examples.",
+    mhs_step3_kd4: "KD-4 · Ability to answer questions / discuss — responsive, accurate, respectful of opinions.",
+    mhs_step3_kd5: "KD-5 · Interaction with students — communicative, friendly, encourages participation.",
+    mhs_step3_kd6: "KD-6 · Punctuality / discipline — starts and ends on schedule.",
+    mhs_step3_kd7: "KD-7 · Grooming / appearance — dresses appropriately per institution standards.",
+
+    mhs_step4_title: "Step 4 · Suggestion / feedback (optional)",
+    mhs_step4_body:
+      "Write constructive feedback for the lecturer. Avoid personal comments unrelated to teaching quality. Feedback is shown to the admin without your name.",
+
+    mhs_step5_title: "Step 5 · Submit all evaluations",
+    mhs_step5_body:
+      "After scoring every lecturer in every one of your courses, click \"Submit All Evaluations\" at the bottom. Once submitted successfully, you will see a confirmation and do not need to fill it in again.",
+
+    mhs_ethics_title: "Filling-in ethics",
+    mhs_ethics_1: "Answer honestly based on your direct classroom experience.",
+    mhs_ethics_2: "Separate teaching quality from the grades / assignments you received.",
+    mhs_ethics_3: "There is no negative retaliation — your identity is not shared with the lecturer.",
+    mhs_ethics_4: "Do not use the feedback field for personal attacks.",
+
+    mhs_faq_title: "Frequently asked questions",
+    mhs_faq_q1: "Does the lecturer know who gave the score?",
+    mhs_faq_a1:
+      "No. Lecturers and the program only see class averages and a list of feedback without sender identities. Identity is only recorded on the admin side for submission audit purposes and is not published.",
+    mhs_faq_q2: "Can I change my answers after submitting?",
+    mhs_faq_a2:
+      "No. After \"Submit All Evaluations\", the data is locked for that period. Make sure your answers are final before submitting.",
+    mhs_faq_q3: "What if I missed most of the class sessions?",
+    mhs_faq_a3:
+      "You can still submit, but please answer only the indicators you can honestly evaluate based on your experience.",
+    mhs_faq_q4: "My NIM was rejected at login. Why?",
+    mhs_faq_a4:
+      "The period may not be open yet or your NIM may not be in the database. Contact your program admin/operator.",
+
+    admin_intro_title: "About the Admin panel",
+    admin_intro_body:
+      "The admin panel is used by program/faculty operators to monitor submission progress, view evaluation summaries, manage the period, and export reports to Excel for the program/faculty leadership.",
+
+    admin_step1_title: "Step 1 · Admin login",
+    admin_step1_body:
+      "Open the /admin page and enter the admin password provided by the faculty. The session lasts until you log out or close the browser.",
+
+    admin_step2_title: "Step 2 · Read the dashboard summary",
+    admin_step2_body:
+      "At the top of the dashboard you see the period status (Open/Closed), 4 statistics (Total Students, Submitted, Pending, Total Evaluations), and a submission progress bar. Use this to monitor responses in real time.",
+
+    admin_step3_title: "Step 3 · Period control",
+    admin_step3_body:
+      "The \"Open Period\" / \"Close Period\" button controls whether students can submit new evaluations. Close the period after the submission window ends so the data is locked before being summarized.",
+
+    admin_step4_title: "Step 4 · Filtering & summaries",
+    admin_step4_body:
+      "Use the Filter Program dropdown to focus on a single study program. There are 3 summary tabs:",
+    admin_step4_t1: "Summary per Course-Lecturer — average for every course × lecturer combination, matching the faculty report format.",
+    admin_step4_t2: "Summary per Lecturer — average for a single lecturer across all the courses they teach.",
+    admin_step4_t3: "Response Details — raw list of every student submission, for audit & verification.",
+
+    admin_step5_title: "Step 5 · Export to Excel",
+    admin_step5_body:
+      "\"Export Summary (.xlsx)\" downloads an Excel file with the same layout as the Penilaian Kinerja MHS document usually forwarded to the program/faculty: 1 sheet per program, columns NO, Lecturer Name, Course, N, KD-1..KD-7, TOTAL, AVG, FEEDBACK. \"Export Raw Responses\" downloads the raw data for audit. Exports respect the active program filter.",
+
+    admin_step6_title: "Step 6 · Final submission",
+    admin_step6_body:
+      "After closing the period, export the final summary, attach it to the official program memo (per campus SOP), and forward it to the vice dean / faculty leadership for follow-up. Keep the raw responses file as an archive.",
+
+    admin_security_title: "Security & best practices",
+    admin_security_1: "Do not share the admin password in open chat groups. Rotate the password at the start of every period.",
+    admin_security_2: "Log out every time you are done — especially on shared computers.",
+    admin_security_3: "Check Response Details to detect suspicious submissions (e.g. a NIM giving 100% scores of 1 or 4).",
+    admin_security_4: "Data is stored on a campus server (Fly.io persistent volume). Periodic backups via Raw Responses download are recommended.",
+
+    contact_title: "Help & contact",
+    contact_body:
+      "Technical questions: contact the faculty system admin. Policy questions: contact the program chair or the FEB UNIGA Malang academic office.",
+  },
+} as const;
+
+export default en;

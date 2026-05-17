@@ -1,8 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
+  const { t } = useTranslation();
   const isAdmin = location.pathname.startsWith("/admin");
+  const isPanduan = location.pathname.startsWith("/panduan");
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -16,36 +20,49 @@ export function Layout({ children }: { children: React.ReactNode }) {
             />
             <div className="leading-tight min-w-0">
               <div className="font-semibold text-sm sm:text-base truncate">
-                Penilaian Kinerja Dosen
+                {t("header.app_title")}
               </div>
               <div className="text-[11px] sm:text-xs text-slate-500 truncate">
-                Fakultas Ekonomi dan Bisnis &middot; UNIGA Malang
+                {t("header.app_subtitle")}
               </div>
             </div>
           </Link>
-          <nav className="flex items-center gap-1 text-xs sm:text-sm shrink-0">
-            <Link
-              to="/"
-              className={`px-2.5 sm:px-3 py-1.5 rounded-md ${
-                !isAdmin ? "bg-indigo-50 text-indigo-700 font-medium" : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              Mahasiswa
-            </Link>
-            <Link
-              to="/admin"
-              className={`px-2.5 sm:px-3 py-1.5 rounded-md ${
-                isAdmin ? "bg-indigo-50 text-indigo-700 font-medium" : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              Admin
-            </Link>
-          </nav>
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <nav className="flex items-center gap-1 text-xs sm:text-sm">
+              <Link
+                to="/"
+                className={`px-2 sm:px-3 py-1.5 rounded-md ${
+                  !isAdmin && !isPanduan
+                    ? "bg-indigo-50 text-indigo-700 font-medium"
+                    : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                {t("header.nav_mahasiswa")}
+              </Link>
+              <Link
+                to="/admin"
+                className={`px-2 sm:px-3 py-1.5 rounded-md ${
+                  isAdmin ? "bg-indigo-50 text-indigo-700 font-medium" : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                {t("header.nav_admin")}
+              </Link>
+              <Link
+                to="/panduan"
+                className={`px-2 sm:px-3 py-1.5 rounded-md ${
+                  isPanduan ? "bg-indigo-50 text-indigo-700 font-medium" : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                {t("header.nav_panduan")}
+              </Link>
+            </nav>
+            <LanguageSwitcher />
+          </div>
         </div>
       </header>
       <main className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6">{children}</main>
       <footer className="text-center text-xs text-slate-400 py-6 px-4">
-        Periode penilaian 2025/2026 &middot; Data dijaga kerahasiaannya
+        {t("footer.periode")} &middot; {t("footer.privacy")}
       </footer>
     </div>
   );
