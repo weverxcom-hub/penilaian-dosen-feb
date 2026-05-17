@@ -13,6 +13,7 @@ openpyxl = "^3.1.5"
 pydantic = {extras = ["email"], version = "^2.13.4"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-multipart = "^0.0.28"
+python-dotenv = "^1.2.2"
 
 
 [build-system]
