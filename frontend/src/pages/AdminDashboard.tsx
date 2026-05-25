@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   AlertCircle,
+  BarChart2,
+  Database,
   Download,
   FileSpreadsheet,
   Lock,
@@ -20,6 +22,7 @@ import {
   type RekapItem,
   type Stats,
 } from "@/lib/api";
+import { MasterDataPanel } from "./admin/MasterDataPanel";
 
 interface Props {
   token: string;
@@ -27,6 +30,7 @@ interface Props {
 }
 
 type Tab = "rekap" | "dosen" | "responses";
+type Section = "rekap" | "master";
 
 export function AdminDashboard({ token, onLogout }: Props) {
   const navigate = useNavigate();
@@ -38,6 +42,7 @@ export function AdminDashboard({ token, onLogout }: Props) {
   const [rekapDosen, setRekapDosen] = useState<RekapDosen[]>([]);
   const [responses, setResponses] = useState<RawResponse[]>([]);
   const [tab, setTab] = useState<Tab>("rekap");
+  const [section, setSection] = useState<Section>("rekap");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -173,6 +178,42 @@ export function AdminDashboard({ token, onLogout }: Props) {
         </div>
       </div>
 
+      <div className="flex flex-wrap gap-2 border-b border-slate-200">
+        <button
+          onClick={() => setSection("rekap")}
+          className={`px-3 sm:px-4 py-2 text-sm font-medium inline-flex items-center gap-1.5 -mb-px border-b-2 ${
+            section === "rekap"
+              ? "border-indigo-600 text-indigo-700"
+              : "border-transparent text-slate-600 hover:text-slate-900"
+          }`}
+        >
+          <BarChart2 size={14} /> {t("admin_dashboard.section_rekap")}
+        </button>
+        <button
+          onClick={() => setSection("master")}
+          className={`px-3 sm:px-4 py-2 text-sm font-medium inline-flex items-center gap-1.5 -mb-px border-b-2 ${
+            section === "master"
+              ? "border-indigo-600 text-indigo-700"
+              : "border-transparent text-slate-600 hover:text-slate-900"
+          }`}
+        >
+          <Database size={14} /> {t("master_data.section_title")}
+        </button>
+      </div>
+
+      {error && (
+        <div className="bg-rose-50 border border-rose-200 text-rose-700 rounded-xl px-4 py-3 flex items-start gap-2 text-sm">
+          <AlertCircle size={16} className="mt-0.5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      {section === "master" && (
+        <MasterDataPanel token={token} prodiList={prodiList} onChanged={load} />
+      )}
+
+      {section === "rekap" && (
+      <>
       <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-wrap items-center gap-3 justify-between">
         <div className="flex items-center gap-2 flex-wrap">
           <label className="text-sm text-slate-600">{t("admin_dashboard.filter_prodi")}</label>
@@ -203,13 +244,6 @@ export function AdminDashboard({ token, onLogout }: Props) {
         </div>
       </div>
 
-      {error && (
-        <div className="bg-rose-50 border border-rose-200 text-rose-700 rounded-xl px-4 py-3 flex items-start gap-2 text-sm">
-          <AlertCircle size={16} className="mt-0.5 shrink-0" />
-          <span>{error}</span>
-        </div>
-      )}
-
       <div className="bg-white border border-slate-200 rounded-xl">
         <div className="flex border-b border-slate-200 overflow-x-auto">
           {([
@@ -237,6 +271,8 @@ export function AdminDashboard({ token, onLogout }: Props) {
           {!loading && tab === "responses" && <ResponsesTable rows={responses} locale={i18n.resolvedLanguage} />}
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }

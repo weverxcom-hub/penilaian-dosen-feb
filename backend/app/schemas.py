@@ -113,6 +113,79 @@ class AdminLogin(BaseModel):
     password: str
 
 
+class ProdiCreate(BaseModel):
+    kode: str = Field(..., min_length=1, max_length=20)
+    nama: str = Field(..., min_length=1, max_length=120)
+
+
+class ProdiUpdate(BaseModel):
+    kode: Optional[str] = Field(default=None, min_length=1, max_length=20)
+    nama: Optional[str] = Field(default=None, min_length=1, max_length=120)
+
+
+class MahasiswaCreate(BaseModel):
+    nim: str = Field(..., min_length=3, max_length=40)
+    nama: str = Field(..., min_length=2, max_length=160)
+    prodi_id: int
+    angkatan: Optional[str] = Field(default=None, max_length=10)
+
+
+class MahasiswaUpdate(BaseModel):
+    nim: Optional[str] = Field(default=None, min_length=3, max_length=40)
+    nama: Optional[str] = Field(default=None, min_length=2, max_length=160)
+    prodi_id: Optional[int] = None
+    angkatan: Optional[str] = Field(default=None, max_length=10)
+
+
+class DosenCreate(BaseModel):
+    nidn: Optional[str] = Field(default=None, max_length=40)
+    nama: str = Field(..., min_length=2, max_length=160)
+    prodi_id: int
+
+
+class DosenUpdate(BaseModel):
+    nidn: Optional[str] = Field(default=None, max_length=40)
+    nama: Optional[str] = Field(default=None, min_length=2, max_length=160)
+    prodi_id: Optional[int] = None
+
+
+class MatkulCreate(BaseModel):
+    kode: str = Field(..., min_length=1, max_length=40)
+    nama: str = Field(..., min_length=2, max_length=200)
+    prodi_id: int
+
+
+class MatkulUpdate(BaseModel):
+    kode: Optional[str] = Field(default=None, min_length=1, max_length=40)
+    nama: Optional[str] = Field(default=None, min_length=2, max_length=200)
+    prodi_id: Optional[int] = None
+
+
+class KelasCreate(BaseModel):
+    matkul_id: int
+    dosen_id: int
+    periode_id: Optional[int] = None
+
+
+class KelasListItem(BaseModel):
+    id: int
+    matkul_id: int
+    matkul_kode: str
+    matkul_nama: str
+    dosen_id: int
+    dosen_nama: str
+    periode_id: int
+    prodi_id: int
+    prodi_nama: str
+
+
+class MahasiswaImportResult(BaseModel):
+    created: int
+    updated: int
+    skipped: int
+    errors: list[str] = []
+
+
 class RekapItem(BaseModel):
     dosen_id: int
     dosen_nama: str
