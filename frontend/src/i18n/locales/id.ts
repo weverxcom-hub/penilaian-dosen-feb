@@ -95,6 +95,7 @@ const id = {
     tab_matkul: "Mata Kuliah",
     tab_kelas: "Pengampuan",
     btn_add: "Tambah",
+    btn_save_and_add: "Simpan & tambah lagi",
     btn_import_csv: "Import CSV",
     btn_edit: "Edit",
     btn_delete: "Hapus",

@@ -249,6 +249,10 @@ function MahasiswaTab({ token, prodiList, filterProdi, setError, onChanged }: Su
             onChanged();
             await load();
           }}
+          onSavedAndContinue={async () => {
+            onChanged();
+            await load();
+          }}
           setError={setError}
         />
       )}
@@ -351,6 +355,10 @@ function DosenTab({ token, prodiList, filterProdi, setError, onChanged }: SubPro
             onChanged();
             await load();
           }}
+          onSavedAndContinue={async () => {
+            onChanged();
+            await load();
+          }}
           setError={setError}
         />
       )}
@@ -440,6 +448,10 @@ function MatkulTab({ token, prodiList, filterProdi, setError, onChanged }: SubPr
           onClose={() => setOpenForm(null)}
           onSaved={async () => {
             setOpenForm(null);
+            onChanged();
+            await load();
+          }}
+          onSavedAndContinue={async () => {
             onChanged();
             await load();
           }}
@@ -540,6 +552,10 @@ function KelasTab({ token, prodiList, filterProdi, setError, onChanged }: SubPro
             onChanged();
             await load();
           }}
+          onSavedAndContinue={async () => {
+            onChanged();
+            await load();
+          }}
           setError={setError}
         />
       )}
@@ -617,6 +633,7 @@ function MahasiswaForm({
   initial,
   onClose,
   onSaved,
+  onSavedAndContinue,
   setError,
 }: {
   token: string;
@@ -624,6 +641,7 @@ function MahasiswaForm({
   initial?: Mahasiswa;
   onClose: () => void;
   onSaved: () => void;
+  onSavedAndContinue?: () => void;
   setError: (msg: string | null) => void;
 }) {
   const { t } = useTranslation();
@@ -633,9 +651,10 @@ function MahasiswaForm({
   const [angkatan, setAngkatan] = useState(initial?.angkatan ?? "");
   const [saving, setSaving] = useState(false);
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!prodiId) return;
+    const mode = getSubmitMode(e);
     setSaving(true);
     try {
       if (initial) {
@@ -653,7 +672,15 @@ function MahasiswaForm({
           angkatan: angkatan.trim() || null,
         });
       }
-      onSaved();
+      if (mode === "continue" && !initial && onSavedAndContinue) {
+        setNim("");
+        setNama("");
+        setAngkatan("");
+        // keep prodiId selected to speed up bulk add
+        onSavedAndContinue();
+      } else {
+        onSaved();
+      }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("master_data.err_save"));
     } finally {
@@ -706,7 +733,7 @@ function MahasiswaForm({
             className="w-full border border-slate-300 rounded-md px-2 py-1.5"
           />
         </Field>
-        <FormFooter onClose={onClose} saving={saving} />
+        <FormFooter onClose={onClose} saving={saving} showAddAnother={!initial} />
       </form>
     </ModalShell>
   );
@@ -718,6 +745,7 @@ function DosenForm({
   initial,
   onClose,
   onSaved,
+  onSavedAndContinue,
   setError,
 }: {
   token: string;
@@ -725,6 +753,7 @@ function DosenForm({
   initial?: Dosen;
   onClose: () => void;
   onSaved: () => void;
+  onSavedAndContinue?: () => void;
   setError: (msg: string | null) => void;
 }) {
   const { t } = useTranslation();
@@ -733,9 +762,10 @@ function DosenForm({
   const [prodiId, setProdiId] = useState<number | "">(initial?.prodi_id ?? "");
   const [saving, setSaving] = useState(false);
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!prodiId) return;
+    const mode = getSubmitMode(e);
     setSaving(true);
     try {
       if (initial) {
@@ -751,7 +781,14 @@ function DosenForm({
           prodi_id: prodiId as number,
         });
       }
-      onSaved();
+      if (mode === "continue" && !initial && onSavedAndContinue) {
+        setNidn("");
+        setNama("");
+        // keep prodiId selected to speed up bulk add
+        onSavedAndContinue();
+      } else {
+        onSaved();
+      }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("master_data.err_save"));
     } finally {
@@ -794,7 +831,7 @@ function DosenForm({
             ))}
           </select>
         </Field>
-        <FormFooter onClose={onClose} saving={saving} />
+        <FormFooter onClose={onClose} saving={saving} showAddAnother={!initial} />
       </form>
     </ModalShell>
   );
@@ -806,6 +843,7 @@ function MatkulForm({
   initial,
   onClose,
   onSaved,
+  onSavedAndContinue,
   setError,
 }: {
   token: string;
@@ -813,6 +851,7 @@ function MatkulForm({
   initial?: Matkul;
   onClose: () => void;
   onSaved: () => void;
+  onSavedAndContinue?: () => void;
   setError: (msg: string | null) => void;
 }) {
   const { t } = useTranslation();
@@ -821,9 +860,10 @@ function MatkulForm({
   const [prodiId, setProdiId] = useState<number | "">(initial?.prodi_id ?? "");
   const [saving, setSaving] = useState(false);
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!prodiId) return;
+    const mode = getSubmitMode(e);
     setSaving(true);
     try {
       if (initial) {
@@ -839,7 +879,14 @@ function MatkulForm({
           prodi_id: prodiId as number,
         });
       }
-      onSaved();
+      if (mode === "continue" && !initial && onSavedAndContinue) {
+        setKode("");
+        setNama("");
+        // keep prodiId selected to speed up bulk add
+        onSavedAndContinue();
+      } else {
+        onSaved();
+      }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("master_data.err_save"));
     } finally {
@@ -883,7 +930,7 @@ function MatkulForm({
             ))}
           </select>
         </Field>
-        <FormFooter onClose={onClose} saving={saving} />
+        <FormFooter onClose={onClose} saving={saving} showAddAnother={!initial} />
       </form>
     </ModalShell>
   );
@@ -894,12 +941,14 @@ function KelasForm({
   prodiList,
   onClose,
   onSaved,
+  onSavedAndContinue,
   setError,
 }: {
   token: string;
   prodiList: Prodi[];
   onClose: () => void;
   onSaved: () => void;
+  onSavedAndContinue?: () => void;
   setError: (msg: string | null) => void;
 }) {
   const { t } = useTranslation();
@@ -930,16 +979,23 @@ function KelasForm({
     })();
   }, [prodiId, token, setError, t]);
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!matkulId || !dosenId) return;
+    const mode = getSubmitMode(e);
     setSaving(true);
     try {
       await api.adminCreateKelas(token, {
         matkul_id: matkulId as number,
         dosen_id: dosenId as number,
       });
-      onSaved();
+      if (mode === "continue" && onSavedAndContinue) {
+        // keep prodi + matkul selected; reset dosen so user can quickly pair the same matkul with another dosen
+        setDosenId("");
+        onSavedAndContinue();
+      } else {
+        onSaved();
+      }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("master_data.err_save"));
     } finally {
@@ -997,7 +1053,7 @@ function KelasForm({
             ))}
           </select>
         </Field>
-        <FormFooter onClose={onClose} saving={saving} />
+        <FormFooter onClose={onClose} saving={saving} showAddAnother />
       </form>
     </ModalShell>
   );
@@ -1125,10 +1181,18 @@ function Field({
   );
 }
 
-function FormFooter({ onClose, saving }: { onClose: () => void; saving: boolean }) {
+function FormFooter({
+  onClose,
+  saving,
+  showAddAnother = false,
+}: {
+  onClose: () => void;
+  saving: boolean;
+  showAddAnother?: boolean;
+}) {
   const { t } = useTranslation();
   return (
-    <div className="flex justify-end gap-2 pt-2">
+    <div className="flex flex-wrap justify-end gap-2 pt-2">
       <button
         type="button"
         onClick={onClose}
@@ -1136,8 +1200,19 @@ function FormFooter({ onClose, saving }: { onClose: () => void; saving: boolean 
       >
         {t("common.cancel")}
       </button>
+      {showAddAnother && (
+        <button
+          type="submit"
+          data-mode="continue"
+          disabled={saving}
+          className="text-sm border border-indigo-300 text-indigo-700 hover:bg-indigo-50 disabled:opacity-50 rounded-md px-3 py-1.5"
+        >
+          {saving ? t("common.submitting") : t("master_data.btn_save_and_add")}
+        </button>
+      )}
       <button
         type="submit"
+        data-mode="close"
         disabled={saving}
         className="text-sm bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 text-white rounded-md px-3 py-1.5"
       >
@@ -1145,4 +1220,9 @@ function FormFooter({ onClose, saving }: { onClose: () => void; saving: boolean 
       </button>
     </div>
   );
+}
+
+function getSubmitMode(e: React.FormEvent<HTMLFormElement>): "close" | "continue" {
+  const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+  return submitter?.dataset.mode === "continue" ? "continue" : "close";
 }

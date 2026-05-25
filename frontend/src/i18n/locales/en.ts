@@ -95,6 +95,7 @@ const en = {
     tab_matkul: "Courses",
     tab_kelas: "Teaching Assignments",
     btn_add: "Add",
+    btn_save_and_add: "Save & add another",
     btn_import_csv: "Import CSV",
     btn_edit: "Edit",
     btn_delete: "Delete",
