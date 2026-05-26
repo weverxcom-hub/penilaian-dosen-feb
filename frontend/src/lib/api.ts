@@ -78,6 +78,25 @@ export type Stats = {
   periode: Periode;
 };
 
+export type KelasListItem = {
+  id: number;
+  matkul_id: number;
+  matkul_kode: string;
+  matkul_nama: string;
+  dosen_id: number;
+  dosen_nama: string;
+  periode_id: number;
+  prodi_id: number;
+  prodi_nama: string;
+};
+
+export type MahasiswaImportResult = {
+  created: number;
+  updated: number;
+  skipped: number;
+  errors: string[];
+};
+
 export type RawResponse = {
   id: number;
   timestamp: string;
@@ -173,6 +192,121 @@ export const api = {
   adminTogglePeriode: (token: string) =>
     request<{ id: number; is_open: boolean }>("/api/admin/periode/toggle", {
       method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  adminListMahasiswa: (token: string, opts: { prodiId?: number; q?: string } = {}) => {
+    const params = new URLSearchParams();
+    if (opts.prodiId) params.set("prodi_id", String(opts.prodiId));
+    if (opts.q) params.set("q", opts.q);
+    const qs = params.toString();
+    return request<Mahasiswa[]>(`/api/admin/mahasiswa${qs ? `?${qs}` : ""}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  adminCreateMahasiswa: (token: string, payload: Omit<Mahasiswa, "id">) =>
+    request<Mahasiswa>("/api/admin/mahasiswa", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    }),
+  adminUpdateMahasiswa: (token: string, id: number, payload: Partial<Omit<Mahasiswa, "id">>) =>
+    request<Mahasiswa>(`/api/admin/mahasiswa/${id}`, {
+      method: "PUT",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    }),
+  adminDeleteMahasiswa: (token: string, id: number) =>
+    request<unknown>(`/api/admin/mahasiswa/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  adminImportMahasiswa: async (
+    token: string,
+    file: File,
+    updateExisting = false,
+  ): Promise<MahasiswaImportResult> => {
+    const fd = new FormData();
+    fd.append("file", file);
+    const res = await fetch(
+      `${API_URL}/api/admin/mahasiswa/import?update_existing=${updateExisting ? "true" : "false"}`,
+      {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      },
+    );
+    if (!res.ok) {
+      let detail = "Gagal import";
+      try {
+        const data = await res.json();
+        if (typeof data.detail === "string") detail = data.detail;
+        else detail = JSON.stringify(data.detail ?? data);
+      } catch {
+        detail = await res.text();
+      }
+      throw new ApiError(detail, res.status);
+    }
+    return (await res.json()) as MahasiswaImportResult;
+  },
+
+  adminListDosen: (token: string, prodiId?: number) =>
+    request<Dosen[]>(`/api/admin/dosen${prodiId ? `?prodi_id=${prodiId}` : ""}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  adminCreateDosen: (token: string, payload: Omit<Dosen, "id">) =>
+    request<Dosen>("/api/admin/dosen", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    }),
+  adminUpdateDosen: (token: string, id: number, payload: Partial<Omit<Dosen, "id">>) =>
+    request<Dosen>(`/api/admin/dosen/${id}`, {
+      method: "PUT",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    }),
+  adminDeleteDosen: (token: string, id: number) =>
+    request<unknown>(`/api/admin/dosen/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  adminListMatkul: (token: string, prodiId?: number) =>
+    request<Matkul[]>(`/api/admin/matkul${prodiId ? `?prodi_id=${prodiId}` : ""}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  adminCreateMatkul: (token: string, payload: Omit<Matkul, "id">) =>
+    request<Matkul>("/api/admin/matkul", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    }),
+  adminUpdateMatkul: (token: string, id: number, payload: Partial<Omit<Matkul, "id">>) =>
+    request<Matkul>(`/api/admin/matkul/${id}`, {
+      method: "PUT",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    }),
+  adminDeleteMatkul: (token: string, id: number) =>
+    request<unknown>(`/api/admin/matkul/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  adminListKelas: (token: string, prodiId?: number) =>
+    request<KelasListItem[]>(`/api/admin/kelas${prodiId ? `?prodi_id=${prodiId}` : ""}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  adminCreateKelas: (token: string, payload: { matkul_id: number; dosen_id: number }) =>
+    request<KelasListItem>("/api/admin/kelas", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    }),
+  adminDeleteKelas: (token: string, id: number) =>
+    request<unknown>(`/api/admin/kelas/${id}`, {
+      method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     }),
 

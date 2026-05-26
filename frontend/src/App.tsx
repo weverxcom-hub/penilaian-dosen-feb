@@ -6,6 +6,7 @@ import { MahasiswaLogin } from "@/pages/MahasiswaLogin";
 import { MahasiswaForm } from "@/pages/MahasiswaForm";
 import { AdminLogin } from "@/pages/AdminLogin";
 import { AdminDashboard } from "@/pages/AdminDashboard";
+import { Panduan } from "@/pages/Panduan";
 
 const MHS_KEY = "feb_penilaian_mhs";
 const ADMIN_KEY = "feb_penilaian_admin_token";
@@ -97,6 +98,7 @@ function App() {
               )
             }
           />
+          <Route path="/panduan" element={<Panduan />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AlertCircle, ShieldCheck } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { AlertCircle, BookOpen, ShieldCheck } from "lucide-react";
 import { api, ApiError } from "@/lib/api";
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export function AdminLogin({ onLogin }: Props) {
+  const { t } = useTranslation();
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -22,7 +24,7 @@ export function AdminLogin({ onLogin }: Props) {
       onLogin(token);
       navigate("/admin/dashboard");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Login gagal");
+      setError(err instanceof ApiError ? err.message : t("admin_login.err_login_failed"));
     } finally {
       setLoading(false);
     }
@@ -33,15 +35,19 @@ export function AdminLogin({ onLogin }: Props) {
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
         <div className="flex items-center gap-2 mb-1">
           <ShieldCheck className="text-indigo-600" size={20} />
-          <h1 className="text-xl font-semibold">Login Admin</h1>
+          <h1 className="text-xl font-semibold">{t("admin_login.title")}</h1>
         </div>
-        <p className="text-sm text-slate-500 mb-6">
-          Akses dashboard rekap penilaian dan ekspor laporan untuk prodi/fakultas.
-        </p>
+        <p className="text-sm text-slate-500 mb-4">{t("admin_login.desc")}</p>
+        <Link
+          to="/panduan"
+          className="mb-5 inline-flex items-center gap-1.5 text-xs sm:text-sm text-indigo-600 hover:text-indigo-700"
+        >
+          <BookOpen size={14} /> {t("admin_login.panduan_link")}
+        </Link>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
-              Password Admin
+              {t("admin_login.label_password")}
             </label>
             <input
               id="password"
@@ -64,7 +70,7 @@ export function AdminLogin({ onLogin }: Props) {
             disabled={loading}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md px-4 py-2.5 disabled:opacity-60"
           >
-            {loading ? "Memuat..." : "Masuk"}
+            {loading ? t("common.loading") : t("admin_login.cta_login")}
           </button>
         </form>
       </div>
